@@ -6,7 +6,6 @@
     <title>SAMAGRA SHIKSHA - SNA SPARSH REPORTS SOFTWARE FY 2026-27 | Complete Proceedings, Annexures & UCs |</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         .editable {
             background-color: #fef08a;
@@ -35,11 +34,15 @@
         }
         .report-page {
             font-family: "Times New Roman", Times, serif;
-            font-size: 11pt;
-            line-height: 1.4;
+            font-size: 10.5pt;
+            line-height: 1.35;
             color: #000;
             position: relative;
-            padding-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            width: 210mm;
+            min-height: 297mm;
+            margin: auto;
+            box-sizing: border-box;
         }
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #000; padding: 4px; text-align: center; }
@@ -51,7 +54,7 @@
             text-align: center;
             border-top: 1px solid #d1d5db;
             padding-top: 4px;
-            margin-top: 16px;
+            margin-top: 12px;
         }
         
         @media print {
@@ -59,7 +62,7 @@
             .print-area { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; padding: 0 !important; }
             .editable, .editable-block { background-color: transparent !important; border: none !important; border-bottom: none !important; padding: 0 !important; }
             body { background: #fff !important; }
-            .single-page-fit { height: 98vh; overflow: hidden; page-break-inside: avoid; }
+            .report-page { width: 100% !important; height: 100vh !important; padding: 0 !important; overflow: hidden; page-break-inside: avoid; }
             .report-footer { position: fixed; bottom: 0; width: 100%; }
         }
     </style>
@@ -68,17 +71,17 @@
 
     <!-- App Header & Navigation Controls -->
     <div class="no-print max-w-5xl mx-auto p-4 sm:p-6">
-        <header class="bg-blue-900 text-white p-4 rounded-t-lg shadow-md text-center">
+        <header class="bg-slate-900 text-white p-4 rounded-t-lg shadow-md text-center border-b-2 border-amber-400">
             <h1 class="text-xl font-bold tracking-wide">SAMAGRA SHIKSHA - SNA SPARSH REPORTS SOFTWARE</h1>
-            <p class="text-sm text-blue-200 mt-1">FY 2026-27 | Complete Proceedings, Annexures & UCs |</p>
-            <p class="text-xs text-yellow-300 mt-1 font-semibold">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</p>
+            <p class="text-sm text-slate-300 mt-1">FY 2026-27 | Complete Proceedings, Annexures & UCs |</p>
+            <p class="text-xs text-amber-300 mt-1 font-semibold">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</p>
         </header>
 
         <!-- DATA ENTRY & AUTO-FILL CONTROL PANEL -->
-        <div class="bg-white p-6 shadow-md border-b-2 border-blue-600 space-y-4">
+        <div class="bg-white p-6 shadow-md border-b-2 border-slate-300 space-y-4">
             <div class="flex justify-between items-center">
                 <label class="block text-sm font-semibold text-gray-700 uppercase">1. Search & Select School Data</label>
-                <span id="dataStatus" class="text-sm text-green-600 font-medium">Loading CSV...</span>
+                <span id="dataStatus" class="text-sm text-emerald-600 font-medium">Loading CSV...</span>
             </div>
             
             <!-- School Selection Dropdowns -->
@@ -100,21 +103,25 @@
             <!-- Auto-Fill Data Entry Panel -->
             <div class="border-t pt-3 mt-3">
                 <label class="block text-xs font-semibold text-blue-900 uppercase mb-2">2. Common Auto-Fill Details (Updates All Reports)</label>
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                    <div>
+                        <label class="block text-xs text-gray-600 mb-1">Report / Meeting Date</label>
+                        <input type="text" id="inputReportDate" value="27/Aug/2026" oninput="syncInputs()" class="w-full p-1.5 text-xs border rounded bg-amber-100 font-bold focus:bg-white text-center">
+                    </div>
                     <div>
                         <label class="block text-xs text-gray-600 mb-1">HM / DDO Name</label>
                         <input type="text" id="inputDdoName" value="Smt. L. SHAILAJA, M.A., B.Ed." oninput="syncInputs()" class="w-full p-1.5 text-xs border rounded bg-yellow-50 focus:bg-white">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-600 mb-1">Vendor Name (GEN Component)</label>
+                        <label class="block text-xs text-gray-600 mb-1">Vendor (GEN Component)</label>
                         <input type="text" id="inputVendorGen" value="M/S GEN SUPPLIERS" oninput="syncInputs()" class="w-full p-1.5 text-xs border rounded bg-yellow-50 focus:bg-white">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-600 mb-1">Vendor Name (SC Component)</label>
+                        <label class="block text-xs text-gray-600 mb-1">Vendor (SC Component)</label>
                         <input type="text" id="inputVendorSc" value="M/S SC TRADERS" oninput="syncInputs()" class="w-full p-1.5 text-xs border rounded bg-yellow-50 focus:bg-white">
                     </div>
                     <div>
-                        <label class="block text-xs text-gray-600 mb-1">Vendor Name (ST Component)</label>
+                        <label class="block text-xs text-gray-600 mb-1">Vendor (ST Component)</label>
                         <input type="text" id="inputVendorSt" value="M/S ST ENTERPRISES" oninput="syncInputs()" class="w-full p-1.5 text-xs border rounded bg-yellow-50 focus:bg-white">
                     </div>
                 </div>
@@ -126,59 +133,59 @@
             </div>
         </div>
 
-        <!-- 7 Report Navigation Buttons -->
-        <div class="bg-blue-800 p-2 shadow-md rounded-b-lg flex flex-wrap gap-1 justify-center text-sm text-white">
-            <button onclick="switchReport(1)" id="tab1" class="px-3 py-2 rounded font-semibold bg-blue-600">1. Proceedings</button>
-            <button onclick="switchReport(2)" id="tab2" class="px-3 py-2 rounded font-semibold bg-blue-900">2. Annexure-1</button>
-            <button onclick="switchReport(3)" id="tab3" class="px-3 py-2 rounded font-semibold bg-blue-900">3. Resolution & Verification</button>
-            <button onclick="switchReport(4)" id="tab4" class="px-3 py-2 rounded font-semibold bg-blue-900">4. Receipts (x3 Pages)</button>
-            <button onclick="switchReport(5)" id="tab5" class="px-3 py-2 rounded font-semibold bg-blue-900">5. Utilization Cert</button>
-            <button onclick="switchReport(6)" id="tab6" class="px-3 py-2 rounded font-semibold bg-blue-900">6. Budget Register</button>
-            <button onclick="switchReport(7)" id="tab7" class="px-3 py-2 rounded font-semibold bg-blue-900">7. Consolidated UC</button>
+        <!-- 7 Report Navigation Buttons with Distinct High-Contrast Colors -->
+        <div class="bg-slate-800 p-2.5 shadow-lg rounded-b-lg flex flex-wrap gap-2 justify-center text-xs text-white">
+            <button onclick="switchReport(1)" id="tab1" class="px-3.5 py-2 rounded-md font-bold transition shadow bg-emerald-600 hover:bg-emerald-500 ring-2 ring-emerald-300">1. Proceedings</button>
+            <button onclick="switchReport(2)" id="tab2" class="px-3.5 py-2 rounded-md font-bold transition shadow bg-indigo-600 hover:bg-indigo-500 opacity-80">2. Annexure-1</button>
+            <button onclick="switchReport(3)" id="tab3" class="px-3.5 py-2 rounded-md font-bold transition shadow bg-amber-600 hover:bg-amber-500 opacity-80">3. Resolution & Verification</button>
+            <button onclick="switchReport(4)" id="tab4" class="px-3.5 py-2 rounded-md font-bold transition shadow bg-purple-600 hover:bg-purple-500 opacity-80">4. Receipts (x3 Pages)</button>
+            <button onclick="switchReport(5)" id="tab5" class="px-3.5 py-2 rounded-md font-bold transition shadow bg-teal-600 hover:bg-teal-500 opacity-80">5. Utilization Cert</button>
+            <button onclick="switchReport(6)" id="tab6" class="px-3.5 py-2 rounded-md font-bold transition shadow bg-rose-600 hover:bg-rose-500 opacity-80">6. Budget Register</button>
+            <button onclick="switchReport(7)" id="tab7" class="px-3.5 py-2 rounded-md font-bold transition shadow bg-cyan-600 hover:bg-cyan-500 opacity-80">7. Consolidated UC</button>
         </div>
 
         <div class="flex justify-between items-center mt-4 bg-white p-4 rounded shadow">
-            <button onclick="autoFillDate()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded font-medium">📅 Auto-Fill Dates</button>
-            <div class="flex gap-2">
-                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded font-semibold">🖨️ Print Active</button>
-                <button onclick="generatePDF()" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded font-semibold">📄 Export PDF</button>
-            </div>
+            <button onclick="autoFillDate()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-2 rounded font-medium text-xs">📅 Auto-Fill Today's Date</button>
+            <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded font-semibold text-xs shadow flex items-center gap-1">
+                🖨️ Print Active A4 / Save PDF
+            </button>
         </div>
     </div>
 
     <!-- REPORT DISPLAY AREA -->
-    <div id="reportContainer" class="print-area max-w-5xl mx-auto bg-white p-8 sm:p-12 border shadow-lg my-4 text-black report-page">
+    <div id="reportContainer" class="print-area max-w-5xl mx-auto bg-white p-6 sm:p-10 border shadow-lg my-4 text-black report-page">
         
-        <!-- REPORT 1: PROCEEDINGS (PRESENT UTILISATION AUTOMATICALLY MATCHES SANCTIONED) -->
-        <div id="report1" class="report-view space-y-4">
-            <div class="text-center font-bold mb-4 uppercase">
+        <!-- REPORT 1: PROCEEDINGS -->
+        <div id="report1" class="report-view space-y-3">
+            <div class="text-center font-bold mb-2 uppercase">
                 <p contenteditable="true" class="editable-block inline-block">PROCEEDINGS OF THE GAZETTED HEADMASTER, <span id="rptDdoHeader">ZPHS RAMAVARAM</span></p>
-                <p class="font-normal normal-case mt-1">Present: <span contenteditable="true" class="editable font-bold auto-ddo-name">Smt. L. SHAILAJA, M.A., B.Ed.</span></p>
+                <p class="font-normal normal-case mt-0.5">Present: <span contenteditable="true" class="editable font-bold auto-ddo-name">Smt. L. SHAILAJA, M.A., B.Ed.</span></p>
             </div>
-            <div class="flex justify-between mb-4">
+            <div class="flex justify-between mb-2 text-xs">
                 <p>Proc. No. <span contenteditable="true" class="editable">01/PMSHRI/2026-27</span></p>
-                <p>Date. <span class="rptDate" contenteditable="true" class="editable">27/Aug/2026</span></p>
+                <p>Date. <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable">27/Aug/2026</span></p>
             </div>
-            <table class="w-full text-left border-none" style="border:none;">
-                <tr style="border:none;"><td style="border:none; padding: 2px; width: 40px; vertical-align: top;"><strong>Sub:</strong></td><td style="border:none; padding: 2px; text-align: justify;">SMC- SNA SPARSH- Samagra Shiksha Funds - Sanction of expenditure in the Financial year (FY)-2026-27 towards COMPOSITE SCHOOL GRANT of <span contenteditable="true" class="editable font-bold rptSchoolName">MPUPS GANDIPALLY</span> orders Issued -Reg.</td></tr>
-                <tr style="border:none;"><td style="border:none; padding: 2px; width: 40px; vertical-align: top;"><strong>Ref:</strong></td><td style="border:none; padding: 2px; text-align: justify;">
+            <table class="w-full text-left border-none text-xs" style="border:none;">
+                <tr style="border:none;"><td style="border:none; padding: 1px; width: 40px; vertical-align: top;"><strong>Sub:</strong></td><td style="border:none; padding: 1px; text-align: justify;">SMC- SNA SPARSH- Samagra Shiksha Funds - Sanction of expenditure in the Financial year (FY)-2026-27 towards COMPOSITE SCHOOL GRANT of <span contenteditable="true" class="editable font-bold rptSchoolName">MPUPS GANDIPALLY</span> orders Issued -Reg.</td></tr>
+                <tr style="border:none;"><td style="border:none; padding: 1px; width: 40px; vertical-align: top;"><strong>Ref:</strong></td><td style="border:none; padding: 1px; text-align: justify;">
                     1. State project Director, SS, TG, Hyderabad Circular Memo No.TF/619/FCI/SNA SPARSH-SS/2026. Dt. 03.07.2026<br>
                     2. State project Director, SS, TG, Hyderabad. Prc.RCNo.2191/CSG/TSS/PLG/T7/2026-1, Date.07/08/2026<br>
-                    3. School Resolution and Committee Recommendations Dated: <span class="rptDate" contenteditable="true" class="editable">27/Aug/2026</span><br>
+                    3. School Resolution and Committee Recommendations Dated: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable">27/Aug/2026</span><br>
                     4. G,O. MS NO. 40 Edu-(ser.V) Dept., Dt. 07.05.2002.
                 </td></tr>
             </table>
-            <p class="font-bold mt-4" contenteditable="true" class="editable-block inline-block">ORDERS:</p>
-            <p class="text-justify indent-8">With reference to the 1st cited above, the State Project Director, TG, Hyderabad has instructed for implementing the Samagra Shiksha Scheme through the SNA-SPARSH Platform w.e.f. 01.04.2026 through PAO/Treasuries in IFMIS portal.</p>
-            <p class="text-justify indent-8">With reference to the 2nd citation above, the budget has been released under Samagra Shiksha, SNA-SPARSH via IFMIS for the activity of COMPOSITE SCHOOL GRANT of <span contenteditable="true" class="editable font-bold rptSchoolName">MPUPS GANDIPALLY</span>. Vide reference 3rd cited, the activity-in-charge has conducted the activity through the committee resolution and submitted the expenditure particulars as per the prescribed norms.</p>
-            <p class="text-justify indent-8">Therefore, as per the powers delegated through the reference cited fourth above, sanction is hereby accorded for <strong>Rs.<span contenteditable="true" class="editable rptTotal">25000</span> (<span contenteditable="true" class="editable rptTotalWords">Twenty five Thousand rupees only</span>)</strong> towards implementation of programmes as per the norms shown below.</p>
-            <table class="my-4 text-[10pt]">
+            <p class="font-bold mt-2 text-xs" contenteditable="true" class="editable-block inline-block">ORDERS:</p>
+            <p class="text-justify indent-6 text-xs">With reference to the 1st cited above, the State Project Director, TG, Hyderabad has instructed for implementing the Samagra Shiksha Scheme through the SNA-SPARSH Platform w.e.f. 01.04.2026 through PAO/Treasuries in IFMIS portal.</p>
+            <p class="text-justify indent-6 text-xs">With reference to the 2nd citation above, the budget has been released under Samagra Shiksha, SNA-SPARSH via IFMIS for the activity of COMPOSITE SCHOOL GRANT of <span contenteditable="true" class="editable font-bold rptSchoolName">MPUPS GANDIPALLY</span>. Vide reference 3rd cited, the activity-in-charge has conducted the activity through the committee resolution and submitted the expenditure particulars as per the prescribed norms.</p>
+            <p class="text-justify indent-6 text-xs">Therefore, as per the powers delegated through the reference cited fourth above, sanction is hereby accorded for <strong>Rs.<span contenteditable="true" class="editable rptTotal">25000</span> (<span contenteditable="true" class="editable rptTotalWords">Twenty five Thousand rupees only</span>)</strong> towards implementation of programmes as per the norms shown below.</p>
+            
+            <table class="my-2 text-[9.5pt]">
                 <tr class="bg-gray-100 font-bold"><th>Major component Name</th><th>Sub Component Name</th><th>Activity</th><th>Sub Activity</th></tr>
                 <tr><td>1.5 - Quality Interventions</td><td>Composite School Grant</td><td>Annual Grant</td><td>COMPOSITE SCHOOL GRANT</td></tr>
             </table>
             
             <!-- COMPONENT TABLE -->
-            <table class="my-4 text-[10pt]">
+            <table class="my-2 text-[9.5pt]">
                 <tr class="bg-gray-100 font-bold"><th>Sl.No</th><th>Name of the Head of Account</th><th>Category</th><th>Sanctioned (₹)</th><th>Already utilised (₹)</th><th>Present Utilisation (₹)</th><th>Balance (₹)</th></tr>
                 <tr>
                     <td>1</td><td>2202-01-001-15-05-500-503</td><td>GEN</td>
@@ -210,11 +217,11 @@
                 </tr>
             </table>
             
-            <p class="text-justify indent-8">The Treasury Officer is requested to honour the bill and credit the amount directly to the respective vendor accounts as per the details of Expenditures and Agency/Vendors in present utilisation enclosed in the Annexure.</p>
-            <div class="mt-8 flex justify-between">
+            <p class="text-justify indent-6 text-xs">The Treasury Officer is requested to honour the bill and credit the amount directly to the respective vendor accounts as per the details of Expenditures and Agency/Vendors in present utilisation enclosed in the Annexure.</p>
+            <div class="mt-6 flex justify-between text-xs">
                 <div>
                     <p contenteditable="true" class="editable-block">Enl.: Resolution & bills</p>
-                    <p class="mt-4 font-bold" contenteditable="true" class="editable-block inline-block">Copy to the:</p>
+                    <p class="mt-2 font-bold" contenteditable="true" class="editable-block inline-block">Copy to the:</p>
                     <p>1. DPO TSS <span contenteditable="true" class="editable font-bold rptDist uppercase">SIDDIPET</span> for Information.</p>
                     <p>2. STO <span contenteditable="true" class="editable">HUSNABAD</span></p>
                     <p>3. Office file</p>
@@ -245,11 +252,11 @@
         </div>
 
         <!-- REPORT 3: MERGED RESOLUTION & VERIFICATION -->
-        <div id="report3" class="report-view hidden single-page-fit space-y-2">
+        <div id="report3" class="report-view hidden space-y-2">
             <p class="font-bold uppercase text-center text-xs" contenteditable="true" class="editable-block">SMC <span class="rptSchoolName">MPUPS GANDIPALLY</span>, <span class="rptMandal">AKKANNAPET</span>: MANDAL, <span class="rptDist">SIDDIPET</span>: DISTRICT</p>
             <div class="flex justify-between font-bold text-xs">
                 <p>UDISECODE: <span contenteditable="true" class="editable rptUdise">36180700609</span></p>
-                <p>Date of Meeting: <span class="rptDate" contenteditable="true" class="editable">27/Aug/2026</span></p>
+                <p>Date of Meeting: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable">27/Aug/2026</span></p>
             </div>
             <h2 class="text-center font-bold underline my-1 text-xs" contenteditable="true" class="editable-block">ALL INTERVENTIONS</h2>
             <p class="text-justify indent-6 text-xs">The AAPC Chairperson, Headmaster and staff of <strong class="rptSchoolName">MPUPS GANDIPALLY</strong>, have unanimously resolved to utilize the Grants amounting to <strong>Rs. <span contenteditable="true" class="editable rptTotal">25000</span> (<span contenteditable="true" class="editable rptTotalWords">Twenty five Thousand rupees only</span>)</strong> received under SNA Sparsh account. These funds will be used towards conducting all activities under all interventions during the Financial year (FY) 2026-27, in accordance with the guidelines issued by the Government and the objectives of the scheme.</p>
@@ -257,14 +264,14 @@
             <p class="text-justify indent-6 text-xs">It is further resolved that the intervention grant shall be used solely for the purpose for which it has been sanctioned, in order to meet the identified needs.</p>
             
             <div class="grid grid-cols-2 gap-4 pt-1">
-                <div class="border border-black p-2 rounded text-xs space-y-1">
-                    <p class="font-bold border-b border-black pb-1 mb-1">Signatures of Participating Staff:</p>
+                <div class="border border-black p-1.5 rounded text-xs space-y-1">
+                    <p class="font-bold border-b border-black pb-0.5 mb-1">Signatures of Participating Staff:</p>
                     <p contenteditable="true" class="editable">1. ___________________________</p>
                     <p contenteditable="true" class="editable">2. ___________________________</p>
                     <p contenteditable="true" class="editable">3. ___________________________</p>
                 </div>
-                <div class="border border-black p-2 rounded text-xs space-y-1">
-                    <p class="font-bold border-b border-black pb-1 mb-1">Signatures of AAPC Members:</p>
+                <div class="border border-black p-1.5 rounded text-xs space-y-1">
+                    <p class="font-bold border-b border-black pb-0.5 mb-1">Signatures of AAPC Members:</p>
                     <p contenteditable="true" class="editable">1. ___________________________</p>
                     <p contenteditable="true" class="editable">2. ___________________________</p>
                     <p contenteditable="true" class="editable">3. ___________________________</p>
@@ -276,18 +283,18 @@
                 <div><p contenteditable="true" class="editable-block">Signature of Gazetted Headmaster (<span class="auto-ddo-name">Smt. L. SHAILAJA</span>)</p></div>
             </div>
 
-            <div class="border-t pt-2 space-y-2">
+            <div class="border-t pt-1.5 space-y-1.5">
                 <h2 class="text-center font-bold uppercase underline text-xs" contenteditable="true" class="editable-block">COMMITTEE VERIFICATION & RECOMMENDATION</h2>
-                <p class="font-bold text-xs">Date: <span class="rptDate" contenteditable="true" class="editable">27/Aug/2026</span></p>
+                <p class="font-bold text-xs">Date: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable">27/Aug/2026</span></p>
                 <p class="text-justify indent-6 text-xs">We, the Verification Committee, have scrutinized the original bills, Vochers, tax invoices, valid GST credentials, and advance stamped receipts. We certify that the purchased items have been physically verified and recorded in the School Stock Register.</p>
-                <p class="text-justify indent-6 text-xs">Pursuant to the Resolution dated <span class="rptDate" contenteditable="true" class="editable">27/Aug/2026</span>, these claims are genuine, valid, and orderly. We hereby recommend issuing the final Sanction Order for a sum of <strong>Rs.<span contenteditable="true" class="editable rptTotal">25000</span> (<span contenteditable="true" class="editable rptTotalWords">Twenty five Thousand rupees only</span>)</strong> for direct payment to the vendor's authenticated bank account via the IFMIS portal under SNA SPARSH norms.</p>
+                <p class="text-justify indent-6 text-xs">Pursuant to the Resolution dated <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable">27/Aug/2026</span>, these claims are genuine, valid, and orderly. We hereby recommend issuing the final Sanction Order for a sum of <strong>Rs.<span contenteditable="true" class="editable rptTotal">25000</span> (<span contenteditable="true" class="editable rptTotalWords">Twenty five Thousand rupees only</span>)</strong> for direct payment to the vendor's authenticated bank account via the IFMIS portal under SNA SPARSH norms.</p>
                 
                 <p class="font-bold text-center text-xs pt-1" contenteditable="true" class="editable-block">Statutory Signatures of the Verification Committee</p>
                 
-                <div class="flex justify-between pt-3 text-center text-xs">
-                    <div class="space-y-2"><p contenteditable="true" class="editable">1. _____________________</p><p contenteditable="true" class="editable-block font-bold">Signature of AAPC Chairperson</p></div>
-                    <div class="space-y-2"><p contenteditable="true" class="editable">2. _____________________</p><p contenteditable="true" class="editable-block font-bold">Verification Member</p></div>
-                    <div class="space-y-2"><p contenteditable="true" class="editable">3. _____________________</p><p contenteditable="true" class="editable-block font-bold">Signature of Gazetted Headmaster</p></div>
+                <div class="flex justify-between pt-2 text-center text-xs">
+                    <div class="space-y-1"><p contenteditable="true" class="editable">1. _____________________</p><p contenteditable="true" class="editable-block font-bold">Signature of AAPC Chairperson</p></div>
+                    <div class="space-y-1"><p contenteditable="true" class="editable">2. _____________________</p><p contenteditable="true" class="editable-block font-bold">Verification Member</p></div>
+                    <div class="space-y-1"><p contenteditable="true" class="editable">3. _____________________</p><p contenteditable="true" class="editable-block font-bold">Signature of Gazetted Headmaster</p></div>
                 </div>
             </div>
             <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
@@ -296,93 +303,93 @@
         <!-- REPORT 4: RECEIPTS -->
         <div id="report4" class="report-view hidden">
             <!-- Page 1: Receipt GEN Component -->
-            <div class="receipt-block page-break pb-8">
-                <div class="flex justify-between font-bold"><p>Date: <span class="rptDate" contenteditable="true" class="editable"></span></p><h2 class="uppercase underline" contenteditable="true" class="editable-block">ADVANCE STAMPED RECEIPT (GEN COMPONENT)</h2><p></p></div>
-                <p class="text-justify mt-4">Received with thanks from the Office of the <strong class="rptSchoolName">MPUPS GANDIPALLY</strong>, Mdl <strong class="rptMandal">AKKANNAPET</strong>, Dist.<strong class="rptDist">SIDDIPET</strong>, the sum of <strong>Rs. <span contenteditable="true" class="editable rptGenPresent">18000</span>/- (<span contenteditable="true" class="editable" id="rptGenWords">Eighteen Thousand rupees only</span>)</strong> towards <strong>GENERAL Component (Head of Account: 2202-01-001-15-05-500-503)</strong> for full and final settlement against Credit Bill for providing goods or services rendered.</p>
-                <p class="text-justify mt-2">The payment is acknowledged through online e-payment transfer/online treasury clearance system directly into our bank account as per the authorization details provided below.</p>
-                <p class="font-bold mt-4" contenteditable="true" class="editable-block inline-block">VENDOR BANK DETAILS FOR E-PAYMENT:</p>
+            <div class="receipt-block page-break pb-6">
+                <div class="flex justify-between font-bold"><p>Date: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable"></span></p><h2 class="uppercase underline" contenteditable="true" class="editable-block">ADVANCE STAMPED RECEIPT (GEN COMPONENT)</h2><p></p></div>
+                <p class="text-justify mt-4 text-xs">Received with thanks from the Office of the <strong class="rptSchoolName">MPUPS GANDIPALLY</strong>, Mdl <strong class="rptMandal">AKKANNAPET</strong>, Dist.<strong class="rptDist">SIDDIPET</strong>, the sum of <strong>Rs. <span contenteditable="true" class="editable rptGenPresent">18000</span>/- (<span contenteditable="true" class="editable" id="rptGenWords">Eighteen Thousand rupees only</span>)</strong> towards <strong>GENERAL Component (Head of Account: 2202-01-001-15-05-500-503)</strong> for full and final settlement against Credit Bill for providing goods or services rendered.</p>
+                <p class="text-justify mt-2 text-xs">The payment is acknowledged through online e-payment transfer/online treasury clearance system directly into our bank account as per the authorization details provided below.</p>
+                <p class="font-bold mt-3 text-xs" contenteditable="true" class="editable-block inline-block">VENDOR BANK DETAILS FOR E-PAYMENT:</p>
                 <div class="ml-4 mt-2 leading-relaxed text-xs">
                     <p>1. Name of the Beneficiary / Vendor: <span contenteditable="true" class="editable font-bold auto-vendor-gen">M/S GEN SUPPLIERS</span></p>
                     <p>2. Bank Account Number: <span contenteditable="true" class="editable font-bold">456</span></p>
                     <p>3. Bank Name & IFSC Code: <span contenteditable="true" class="editable font-bold">SBI, SBIN123</span></p>
                     <p>4. GSTIN (if applicable): <span contenteditable="true" class="editable">_________________</span></p>
                 </div>
-                <div class="flex justify-between mt-6 items-end">
-                    <div class="border-2 border-black p-4 text-center w-32 h-24 text-xs flex items-center justify-center" contenteditable="true" class="editable-block">Affix 1/-<br>Revenue Stamp<br>(Sign across stamp)</div>
+                <div class="flex justify-between mt-5 items-end">
+                    <div class="border-2 border-black p-3 text-center w-32 h-20 text-xs flex items-center justify-center" contenteditable="true" class="editable-block">Affix 1/-<br>Revenue Stamp<br>(Sign across stamp)</div>
                     <div class="text-center space-y-1 text-xs">
                         <p contenteditable="true" class="editable-block">For [<span class="auto-vendor-gen">M/S GEN SUPPLIERS</span>]</p>
-                        <p class="mt-6" contenteditable="true" class="editable-block">(Signature of Authorized Signatory)</p>
+                        <p class="mt-4" contenteditable="true" class="editable-block">(Signature of Authorized Signatory)</p>
                         <p>Name: <span contenteditable="true" class="editable auto-vendor-gen">M/S GEN SUPPLIERS</span></p>
                         <p contenteditable="true" class="editable">Designation</p>
                         <p contenteditable="true" class="editable">Office Seal:</p>
                     </div>
                 </div>
-                <h3 class="text-center font-bold underline mt-6" contenteditable="true" class="editable-block">COUNTERSIGNATURE OF DDO</h3>
+                <h3 class="text-center font-bold underline mt-5 text-xs" contenteditable="true" class="editable-block">COUNTERSIGNATURE OF DDO</h3>
                 <p class="text-justify mt-2 text-xs">Certified that the services/materials mentioned above have been received in good condition, entered in the Stock Register and found correct. The payment may be sanctioned and disbursed online directly to the vendor's bank account.</p>
-                <div class="flex justify-between mt-6 text-xs">
-                    <div><p>Date: <span class="rptDate" contenteditable="true" class="editable"></span></p><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p></div>
+                <div class="flex justify-between mt-5 text-xs">
+                    <div><p>Date: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable"></span></p><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p></div>
                     <div class="text-center"><p contenteditable="true" class="editable-block">Signature of DDO (<span class="auto-ddo-name">Smt. L. SHAILAJA</span>)</p><p>DDO Code: <span contenteditable="true" class="editable">18050308014</span></p></div>
                 </div>
                 <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
             </div>
 
             <!-- Page 2: Receipt SC Component -->
-            <div class="receipt-block page-break pb-8 pt-4">
-                <div class="flex justify-between font-bold"><p>Date: <span class="rptDate" contenteditable="true" class="editable"></span></p><h2 class="uppercase underline" contenteditable="true" class="editable-block">ADVANCE STAMPED RECEIPT (SC COMPONENT)</h2><p></p></div>
-                <p class="text-justify mt-4">Received with thanks from the Office of the <strong class="rptSchoolName">MPUPS GANDIPALLY</strong>, Mdl <strong class="rptMandal">AKKANNAPET</strong>, Dist.<strong class="rptDist">SIDDIPET</strong>, the sum of <strong>Rs. <span contenteditable="true" class="editable rptSCPresent">4250</span>/- (<span contenteditable="true" class="editable" id="rptScWords">Four Thousand Two Hundred and Fifty rupees only</span>)</strong> towards <strong>SC Component (Head of Account: 2202-01-789-15-05-500-503)</strong> for full and final settlement against Credit Bill for providing goods or services rendered.</p>
-                <p class="text-justify mt-2">The payment is acknowledged through online e-payment transfer/online treasury clearance system directly into our bank account as per the authorization details provided below.</p>
-                <p class="font-bold mt-4" contenteditable="true" class="editable-block inline-block">VENDOR BANK DETAILS FOR E-PAYMENT:</p>
+            <div class="receipt-block page-break pb-6 pt-4">
+                <div class="flex justify-between font-bold"><p>Date: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable"></span></p><h2 class="uppercase underline" contenteditable="true" class="editable-block">ADVANCE STAMPED RECEIPT (SC COMPONENT)</h2><p></p></div>
+                <p class="text-justify mt-4 text-xs">Received with thanks from the Office of the <strong class="rptSchoolName">MPUPS GANDIPALLY</strong>, Mdl <strong class="rptMandal">AKKANNAPET</strong>, Dist.<strong class="rptDist">SIDDIPET</strong>, the sum of <strong>Rs. <span contenteditable="true" class="editable rptSCPresent">4250</span>/- (<span contenteditable="true" class="editable" id="rptScWords">Four Thousand Two Hundred and Fifty rupees only</span>)</strong> towards <strong>SC Component (Head of Account: 2202-01-789-15-05-500-503)</strong> for full and final settlement against Credit Bill for providing goods or services rendered.</p>
+                <p class="text-justify mt-2 text-xs">The payment is acknowledged through online e-payment transfer/online treasury clearance system directly into our bank account as per the authorization details provided below.</p>
+                <p class="font-bold mt-3 text-xs" contenteditable="true" class="editable-block inline-block">VENDOR BANK DETAILS FOR E-PAYMENT:</p>
                 <div class="ml-4 mt-2 leading-relaxed text-xs">
                     <p>1. Name of the Beneficiary / Vendor: <span contenteditable="true" class="editable font-bold auto-vendor-sc">M/S SC TRADERS</span></p>
                     <p>2. Bank Account Number: <span contenteditable="true" class="editable font-bold">789</span></p>
                     <p>3. Bank Name & IFSC Code: <span contenteditable="true" class="editable font-bold">SBI, SBIN456</span></p>
                     <p>4. GSTIN (if applicable): <span contenteditable="true" class="editable">_________________</span></p>
                 </div>
-                <div class="flex justify-between mt-6 items-end">
-                    <div class="border-2 border-black p-4 text-center w-32 h-24 text-xs flex items-center justify-center" contenteditable="true" class="editable-block">Affix 1/-<br>Revenue Stamp<br>(Sign across stamp)</div>
+                <div class="flex justify-between mt-5 items-end">
+                    <div class="border-2 border-black p-3 text-center w-32 h-20 text-xs flex items-center justify-center" contenteditable="true" class="editable-block">Affix 1/-<br>Revenue Stamp<br>(Sign across stamp)</div>
                     <div class="text-center space-y-1 text-xs">
                         <p contenteditable="true" class="editable-block">For [<span class="auto-vendor-sc">M/S SC TRADERS</span>]</p>
-                        <p class="mt-6" contenteditable="true" class="editable-block">(Signature of Authorized Signatory)</p>
+                        <p class="mt-4" contenteditable="true" class="editable-block">(Signature of Authorized Signatory)</p>
                         <p>Name: <span contenteditable="true" class="editable auto-vendor-sc">M/S SC TRADERS</span></p>
                         <p contenteditable="true" class="editable">Designation</p>
                         <p contenteditable="true" class="editable">Office Seal:</p>
                     </div>
                 </div>
-                <h3 class="text-center font-bold underline mt-6" contenteditable="true" class="editable-block">COUNTERSIGNATURE OF DDO</h3>
+                <h3 class="text-center font-bold underline mt-5 text-xs" contenteditable="true" class="editable-block">COUNTERSIGNATURE OF DDO</h3>
                 <p class="text-justify mt-2 text-xs">Certified that the services/materials mentioned above have been received in good condition, entered in the Stock Register and found correct. The payment may be sanctioned and disbursed online directly to the vendor's bank account.</p>
-                <div class="flex justify-between mt-6 text-xs">
-                    <div><p>Date: <span class="rptDate" contenteditable="true" class="editable"></span></p><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p></div>
+                <div class="flex justify-between mt-5 text-xs">
+                    <div><p>Date: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable"></span></p><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p></div>
                     <div class="text-center"><p contenteditable="true" class="editable-block">Signature of DDO (<span class="auto-ddo-name">Smt. L. SHAILAJA</span>)</p><p>DDO Code: <span contenteditable="true" class="editable">18050308014</span></p></div>
                 </div>
                 <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
             </div>
 
             <!-- Page 3: Receipt ST Component -->
-            <div class="receipt-block pb-8 pt-4">
-                <div class="flex justify-between font-bold"><p>Date: <span class="rptDate" contenteditable="true" class="editable"></span></p><h2 class="uppercase underline" contenteditable="true" class="editable-block">ADVANCE STAMPED RECEIPT (ST COMPONENT)</h2><p></p></div>
-                <p class="text-justify mt-4">Received with thanks from the Office of the <strong class="rptSchoolName">MPUPS GANDIPALLY</strong>, Mdl <strong class="rptMandal">AKKANNAPET</strong>, Dist.<strong class="rptDist">SIDDIPET</strong>, the sum of <strong>Rs. <span contenteditable="true" class="editable rptSTPresent">2750</span>/- (<span contenteditable="true" class="editable" id="rptStWords">Two Thousand Seven Hundred and Fifty rupees only</span>)</strong> towards <strong>ST Component (Head of Account: 2202-01-796-15-05-500-503)</strong> for full and final settlement against Credit Bill for providing goods or services rendered.</p>
-                <p class="text-justify mt-2">The payment is acknowledged through online e-payment transfer/online treasury clearance system directly into our bank account as per the authorization details provided below.</p>
-                <p class="font-bold mt-4" contenteditable="true" class="editable-block inline-block">VENDOR BANK DETAILS FOR E-PAYMENT:</p>
+            <div class="receipt-block pb-6 pt-4">
+                <div class="flex justify-between font-bold"><p>Date: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable"></span></p><h2 class="uppercase underline" contenteditable="true" class="editable-block">ADVANCE STAMPED RECEIPT (ST COMPONENT)</h2><p></p></div>
+                <p class="text-justify mt-4 text-xs">Received with thanks from the Office of the <strong class="rptSchoolName">MPUPS GANDIPALLY</strong>, Mdl <strong class="rptMandal">AKKANNAPET</strong>, Dist.<strong class="rptDist">SIDDIPET</strong>, the sum of <strong>Rs. <span contenteditable="true" class="editable rptSTPresent">2750</span>/- (<span contenteditable="true" class="editable" id="rptStWords">Two Thousand Seven Hundred and Fifty rupees only</span>)</strong> towards <strong>ST Component (Head of Account: 2202-01-796-15-05-500-503)</strong> for full and final settlement against Credit Bill for providing goods or services rendered.</p>
+                <p class="text-justify mt-2 text-xs">The payment is acknowledged through online e-payment transfer/online treasury clearance system directly into our bank account as per the authorization details provided below.</p>
+                <p class="font-bold mt-3 text-xs" contenteditable="true" class="editable-block inline-block">VENDOR BANK DETAILS FOR E-PAYMENT:</p>
                 <div class="ml-4 mt-2 leading-relaxed text-xs">
                     <p>1. Name of the Beneficiary / Vendor: <span contenteditable="true" class="editable font-bold auto-vendor-st">M/S ST ENTERPRISES</span></p>
                     <p>2. Bank Account Number: <span contenteditable="true" class="editable font-bold">123</span></p>
                     <p>3. Bank Name & IFSC Code: <span contenteditable="true" class="editable font-bold">SBI, SBINXYZ1</span></p>
                     <p>4. GSTIN (if applicable): <span contenteditable="true" class="editable">_________________</span></p>
                 </div>
-                <div class="flex justify-between mt-6 items-end">
-                    <div class="border-2 border-black p-4 text-center w-32 h-24 text-xs flex items-center justify-center" contenteditable="true" class="editable-block">Affix 1/-<br>Revenue Stamp<br>(Sign across stamp)</div>
+                <div class="flex justify-between mt-5 items-end">
+                    <div class="border-2 border-black p-3 text-center w-32 h-20 text-xs flex items-center justify-center" contenteditable="true" class="editable-block">Affix 1/-<br>Revenue Stamp<br>(Sign across stamp)</div>
                     <div class="text-center space-y-1 text-xs">
                         <p contenteditable="true" class="editable-block">For [<span class="auto-vendor-st">M/S ST ENTERPRISES</span>]</p>
-                        <p class="mt-6" contenteditable="true" class="editable-block">(Signature of Authorized Signatory)</p>
+                        <p class="mt-4" contenteditable="true" class="editable-block">(Signature of Authorized Signatory)</p>
                         <p>Name: <span contenteditable="true" class="editable auto-vendor-st">M/S ST ENTERPRISES</span></p>
                         <p contenteditable="true" class="editable">Designation</p>
                         <p contenteditable="true" class="editable">Office Seal:</p>
                     </div>
                 </div>
-                <h3 class="text-center font-bold underline mt-6" contenteditable="true" class="editable-block">COUNTERSIGNATURE OF DDO</h3>
+                <h3 class="text-center font-bold underline mt-5 text-xs" contenteditable="true" class="editable-block">COUNTERSIGNATURE OF DDO</h3>
                 <p class="text-justify mt-2 text-xs">Certified that the services/materials mentioned above have been received in good condition, entered in the Stock Register and found correct. The payment may be sanctioned and disbursed online directly to the vendor's bank account.</p>
-                <div class="flex justify-between mt-6 text-xs">
-                    <div><p>Date: <span class="rptDate" contenteditable="true" class="editable"></span></p><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p></div>
+                <div class="flex justify-between mt-5 text-xs">
+                    <div><p>Date: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable"></span></p><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p></div>
                     <div class="text-center"><p contenteditable="true" class="editable-block">Signature of DDO (<span class="auto-ddo-name">Smt. L. SHAILAJA</span>)</p><p>DDO Code: <span contenteditable="true" class="editable">18050308014</span></p></div>
                 </div>
                 <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
@@ -396,7 +403,7 @@
             <p class="text-center font-bold uppercase"><span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span>(DDO Code <span contenteditable="true" class="editable">18050308014</span>), Mdl <span contenteditable="true" class="editable rptMandal">AKKANNAPET</span>, Dist.<span contenteditable="true" class="editable rptDist">SIDDIPET</span></p>
             <p class="text-center font-bold uppercase" contenteditable="true" class="editable-block">UNDER SNA SPARSH ACCOUNT COMPOSITE SCHOOL GRANT.</p>
             <p class="text-justify indent-8 mt-6">Certified that a sum of <strong>Rs. <span contenteditable="true" class="editable rptTotal">25000</span> (<span contenteditable="true" class="editable rptTotalWords">Twenty five Thousand rupees only</span>)</strong> was received under SNA Sparsh Account during the financial year 2026-27, towards the event of Composite School Grant' by <strong class="rptSchoolName">MPUPS GANDIPALLY</strong>(UDISE Code: <strong class="rptUdise">36180700609</strong>).</p>
-            <p class="text-justify indent-8 mt-4">Out of this, an amount of <strong>Rs. <span contenteditable="true" class="editable rptTotalPresent">25000</span> (<span contenteditable="true" class="editable rptTotalWords">Twenty five Thousand rupees only</span>)</strong> has been utilized for the purposes for which it was sanctioned, as detailed below category-wise. The balance of Rs.<span id="ucBalText">0</span>/- remains unutilized as on <span class="rptDate" contenteditable="true" class="editable">26-Aug-2026</span>.</p>
+            <p class="text-justify indent-8 mt-4">Out of this, an amount of <strong>Rs. <span contenteditable="true" class="editable rptTotalPresent">25000</span> (<span contenteditable="true" class="editable rptTotalWords">Twenty five Thousand rupees only</span>)</strong> has been utilized for the purposes for which it was sanctioned, as detailed below category-wise. The balance of Rs.<span id="ucBalText">0</span>/- remains unutilized as on <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable">26-Aug-2026</span>.</p>
             <h3 class="text-center font-bold underline mt-8 mb-4" contenteditable="true" class="editable-block">CATEGORY-WISE STATEMENT FOR COMPOSITE SCHOOL GRANT</h3>
             <table>
                 <tr class="bg-gray-100 font-bold"><th>S.No</th><th>Category</th><th>Amount Sanctioned</th><th>Already Utilized Amount /With GST</th><th>Present Utilisation Amount/with GST)</th><th>Balance</th><th>Remarks</th></tr>
@@ -406,7 +413,7 @@
                 <tr class="font-bold"><td colspan="2" class="text-right pr-4">Total</td><td><span class="rptTotal">25,000</span></td><td><span class="rptTotalAlready">0</span></td><td><span class="rptTotalPresent">25,000</span></td><td><span class="rptTotalBal">0</span></td><td></td></tr>
             </table>
             <div class="mt-16 flex justify-between">
-                <div><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p><p>Date: <span class="rptDate" contenteditable="true" class="editable"></span></p></div>
+                <div><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p><p>Date: <span class="rptDate" contenteditable="true" oninput="syncDateFromReport(this)" class="editable"></span></p></div>
                 <div class="text-center">
                     <p contenteditable="true" class="editable-block">Signature of Head of Office / DDO</p>
                     <p class="mt-2 text-left">Name: <span contenteditable="true" class="editable auto-ddo-name">Smt. L. SHAILAJA, M.A., B.Ed.</span></p>
@@ -509,15 +516,23 @@
         });
 
         function syncInputs() {
+            const dateVal = document.getElementById('inputReportDate').value || "27/Aug/2026";
             const ddo = document.getElementById('inputDdoName').value || "Smt. L. SHAILAJA, M.A., B.Ed.";
             const vGen = document.getElementById('inputVendorGen').value || "M/S GEN SUPPLIERS";
             const vSc = document.getElementById('inputVendorSc').value || "M/S SC TRADERS";
             const vSt = document.getElementById('inputVendorSt').value || "M/S ST ENTERPRISES";
 
+            document.querySelectorAll('.rptDate').forEach(el => el.innerText = dateVal);
             document.querySelectorAll('.auto-ddo-name').forEach(el => el.innerText = ddo);
             document.querySelectorAll('.auto-vendor-gen').forEach(el => el.innerText = vGen);
             document.querySelectorAll('.auto-vendor-sc').forEach(el => el.innerText = vSc);
             document.querySelectorAll('.auto-vendor-st').forEach(el => el.innerText = vSt);
+        }
+
+        function syncDateFromReport(el) {
+            const newDate = el.innerText.trim();
+            document.getElementById('inputReportDate').value = newDate;
+            document.querySelectorAll('.rptDate').forEach(item => { if (item !== el) item.innerText = newDate; });
         }
 
         function autoCalculate() {
@@ -529,11 +544,9 @@
             const genSanction = parseVal('#report1 .rptGen');
             const genAlready = parseVal('#report1 .rptGenAlready');
             
-            // Automatically set Present Utilisation = Sanctioned Amount if not explicitly modified
             let genPresentEl = document.querySelector('#report1 .rptGenPresent');
             let genPresent = genSanction;
             if (genPresentEl) genPresentEl.innerText = genPresent.toLocaleString('en-IN');
-            
             const genBal = genSanction - genAlready - genPresent;
 
             const scSanction = parseVal('#report1 .rptSC');
@@ -542,7 +555,6 @@
             let scPresentEl = document.querySelector('#report1 .rptSCPresent');
             let scPresent = scSanction;
             if (scPresentEl) scPresentEl.innerText = scPresent.toLocaleString('en-IN');
-            
             const scBal = scSanction - scAlready - scPresent;
 
             const stSanction = parseVal('#report1 .rptST');
@@ -551,7 +563,6 @@
             let stPresentEl = document.querySelector('#report1 .rptSTPresent');
             let stPresent = stSanction;
             if (stPresentEl) stPresentEl.innerText = stPresent.toLocaleString('en-IN');
-            
             const stBal = stSanction - stAlready - stPresent;
 
             const totalSanction = genSanction + scSanction + stSanction;
@@ -559,7 +570,6 @@
             const totalPresent = genPresent + scPresent + stPresent;
             const totalBal = genBal + scBal + stBal;
 
-            // Update DOM Elements Across All Reports
             document.querySelectorAll('.rptGenBal').forEach(el => el.innerText = genBal.toLocaleString('en-IN'));
             document.querySelectorAll('.rptSCBal').forEach(el => el.innerText = scBal.toLocaleString('en-IN'));
             document.querySelectorAll('.rptSTBal').forEach(el => el.innerText = stBal.toLocaleString('en-IN'));
@@ -582,7 +592,6 @@
             document.getElementById('rptTotalBal').innerText = totalBal.toLocaleString('en-IN');
             document.getElementById('ucBalText').innerText = totalBal.toLocaleString('en-IN');
 
-            // Words
             document.querySelectorAll('.rptTotalWords').forEach(el => el.innerText = numberToWords(totalSanction));
             document.getElementById('rptGenWords').innerText = numberToWords(genPresent);
             document.getElementById('rptScWords').innerText = numberToWords(scPresent);
@@ -591,18 +600,25 @@
 
         function switchReport(num) {
             activeReport = num;
+
             for (let i = 1; i <= 7; i++) {
                 document.getElementById(`report${i}`).classList.add('hidden');
-                document.getElementById(`tab${i}`).classList.replace('bg-blue-600', 'bg-blue-900');
+                const btn = document.getElementById(`tab${i}`);
+                btn.classList.add('opacity-80');
+                btn.classList.remove('ring-2', 'ring-amber-300');
             }
+            
+            const activeBtn = document.getElementById(`tab${num}`);
             document.getElementById(`report${num}`).classList.remove('hidden');
-            document.getElementById(`tab${num}`).classList.replace('bg-blue-900', 'bg-blue-600');
+            activeBtn.classList.remove('opacity-80');
+            activeBtn.classList.add('ring-2', 'ring-amber-300');
         }
 
         function autoFillDate() {
             const today = new Date();
             const formattedDate = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '/');
-            document.querySelectorAll('.rptDate').forEach(el => el.innerText = formattedDate);
+            document.getElementById('inputReportDate').value = formattedDate;
+            syncInputs();
         }
 
         function loadCSVData() {
@@ -700,18 +716,6 @@
             
             autoCalculate();
             syncInputs();
-        }
-
-        function generatePDF() {
-            const element = document.getElementById(`report${activeReport}`);
-            const opt = {
-                margin:       0.4,
-                filename:     `SPARSH_Report_${activeReport}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save();
         }
     </script>
 </body>
