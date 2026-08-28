@@ -38,20 +38,11 @@
             line-height: 1.4;
             color: #000;
             position: relative;
-            padding-bottom: 2.5rem;
         }
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #000; padding: 4px; text-align: center; }
         .text-justify { text-align: justify; }
         .page-break { page-break-after: always; break-after: page; }
-        .report-footer {
-            font-size: 8pt;
-            color: #4b5563;
-            text-align: center;
-            border-top: 1px solid #d1d5db;
-            padding-top: 4px;
-            margin-top: 16px;
-        }
         
         @media print {
             .no-print { display: none !important; }
@@ -59,7 +50,6 @@
             .editable, .editable-block { background-color: transparent !important; border: none !important; border-bottom: none !important; padding: 0 !important; }
             body { background: #fff !important; }
             .single-page-fit { height: 98vh; overflow: hidden; page-break-inside: avoid; }
-            .report-footer { position: fixed; bottom: 0; width: 100%; }
         }
     </style>
 </head>
@@ -70,7 +60,6 @@
         <header class="bg-blue-900 text-white p-4 rounded-t-lg shadow-md text-center">
             <h1 class="text-xl font-bold tracking-wide">SAMAGRA SHIKSHA - SNA SPARSH REPORTS SOFTWARE</h1>
             <p class="text-sm text-blue-200 mt-1">FY 2026-27 | Complete Proceedings, Annexures & UCs |</p>
-            <p class="text-xs text-yellow-300 mt-1 font-semibold">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</p>
         </header>
 
         <!-- DATA ENTRY & AUTO-FILL CONTROL PANEL -->
@@ -223,7 +212,6 @@
                     <p id="rptDdoFooter" contenteditable="true" class="editable-block">ZPHS RAMAVARAM</p>
                 </div>
             </div>
-            <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
         </div>
 
         <!-- REPORT 2: ANNEXURE-1 -->
@@ -240,7 +228,6 @@
             <div class="mt-12 text-right">
                 <p contenteditable="true" class="editable-block inline-block">Signature</p>
             </div>
-            <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
         </div>
 
         <!-- REPORT 3: MERGED RESOLUTION & VERIFICATION -->
@@ -289,7 +276,6 @@
                     <div class="space-y-2"><p contenteditable="true" class="editable">3. _____________________</p><p contenteditable="true" class="editable-block font-bold">Signature of Gazetted Headmaster</p></div>
                 </div>
             </div>
-            <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
         </div>
 
         <!-- REPORT 4: RECEIPTS -->
@@ -322,7 +308,6 @@
                     <div><p>Date: <span class="rptDate editable" contenteditable="true">27/Aug/2026</span></p><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p></div>
                     <div class="text-center"><p contenteditable="true" class="editable-block">Signature of DDO (<span class="auto-ddo-name">Smt. L. SHAILAJA</span>)</p><p>DDO Code: <span contenteditable="true" class="editable">18050308014</span></p></div>
                 </div>
-                <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
             </div>
 
             <!-- Page 2: Receipt SC Component -->
@@ -353,7 +338,6 @@
                     <div><p>Date: <span class="rptDate editable" contenteditable="true">27/Aug/2026</span></p><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p></div>
                     <div class="text-center"><p contenteditable="true" class="editable-block">Signature of DDO (<span class="auto-ddo-name">Smt. L. SHAILAJA</span>)</p><p>DDO Code: <span contenteditable="true" class="editable">18050308014</span></p></div>
                 </div>
-                <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
             </div>
 
             <!-- Page 3: Receipt ST Component -->
@@ -384,7 +368,6 @@
                     <div><p>Date: <span class="rptDate editable" contenteditable="true">27/Aug/2026</span></p><p>Place: <span contenteditable="true" class="editable rptSchoolName">MPUPS GANDIPALLY</span></p></div>
                     <div class="text-center"><p contenteditable="true" class="editable-block">Signature of DDO (<span class="auto-ddo-name">Smt. L. SHAILAJA</span>)</p><p>DDO Code: <span contenteditable="true" class="editable">18050308014</span></p></div>
                 </div>
-                <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
             </div>
         </div>
 
@@ -413,7 +396,6 @@
                     <p class="mt-2 text-left">Seal:</p>
                 </div>
             </div>
-            <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
         </div>
 
         <!-- REPORT 6: BUDGET WATCH REGISTER -->
@@ -445,7 +427,6 @@
                     <td><span class="rptTotal">25000</span></td><td></td><td><span class="rptTotalPresent">25,000</span></td><td><span class="rptTotalBal">0</span></td><td></td><td></td>
                 </tr>
             </table>
-            <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
         </div>
 
         <!-- REPORT 7: CONSOLIDATED UC -->
@@ -478,7 +459,6 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="report-footer">Created by Ashok Vemula (XXXXX XX057) - ashokvemulad@gmail.com</div>
         </div>
     </div>
 
